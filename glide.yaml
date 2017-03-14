@@ -1,0 +1,3 @@
+package: github.com/Bigomby/gopiper
+import:
+- package: github.com/yuin/gopher-lua

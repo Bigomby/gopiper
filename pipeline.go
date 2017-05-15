@@ -16,7 +16,7 @@
 
 package gopiper
 
-import "github.com/bigomby/gopiper/component"
+import "github.com/Bigomby/gopiper/component"
 
 const (
 	// Done informs that a worker has finshed processing the message

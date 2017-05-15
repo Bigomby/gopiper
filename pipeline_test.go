@@ -19,7 +19,7 @@ package gopiper
 import (
 	"testing"
 
-	"github.com/bigomby/gopiper/component"
+	"github.com/Bigomby/gopiper/component"
 )
 
 type TestComponent struct{}
@@ -30,7 +30,7 @@ func (c *TestComponent) Handle(m *component.Message, cb component.HandledCallbac
 
 type TestFactory struct{}
 
-func (f TestFactory) Create(id int) component.Component {
+func (f TestFactory) Create(id int, postponed chan *component.Message) component.Component {
 	return &TestComponent{}
 }
 

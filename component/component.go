@@ -21,7 +21,7 @@ package component
 //
 // A component should call the callback function to report the status of the
 // action performed. Depending on the report, the following actions will
-// occurr:
+// occur:
 //
 // - Done (code 0): The message has been successfully processed and should
 // be sent to the next component of the pipeline.

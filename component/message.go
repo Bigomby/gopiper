@@ -49,5 +49,5 @@ func (m *Message) Status() *Report {
 	return m.report
 }
 
-// Release free resources asociated to the message
+// Release free resources associated to the message
 func (m *Message) Release() {}

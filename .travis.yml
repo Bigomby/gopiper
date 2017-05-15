@@ -1,0 +1,33 @@
+language: go
+
+sudo: required
+
+branches:
+  only:
+    - master
+    - develop
+
+go:
+  - 1.8.1
+
+before_install:
+  - go get github.com/mattn/goveralls
+  - go get -v github.com/Masterminds/glide
+
+install:
+  - make vendor
+
+script:
+  - make
+  - make tests
+
+after_success:
+  - make coverage
+  - goveralls -coverprofile=coverage.out -service=travis-ci
+
+deploy:
+  provider: releases
+  skip_cleanup: true
+  file: $(echo $TRAVIS_REPO_SLUG | cut -d "/" -f 2)
+  on:
+    tags: true

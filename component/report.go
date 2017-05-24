@@ -15,11 +15,11 @@
 package component
 
 const (
-	// Done informs that a worker has finshed processing the message
-	Done = iota
-
-	// Continue informs that a worker needs more message
-	Continue
+	Done     = 0
+	Continue = 1
+	Retry    = 100
+	Fail     = 200
+	Drop     = 300
 )
 
 // Report contains information about the result of processing a message

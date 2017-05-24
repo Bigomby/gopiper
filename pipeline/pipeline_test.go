@@ -22,8 +22,8 @@ import (
 
 type TestComponent struct{}
 
-func (c *TestComponent) Handle(m component.Message, cb component.HandledCallback) {
-	return
+func (c *TestComponent) Handle(m component.Message) *component.Report {
+	return &component.Report{}
 }
 
 type TestFactory struct{}

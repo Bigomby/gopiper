@@ -98,15 +98,16 @@ func handleMessage(
 	worker component.Component,
 	output chan<- component.Message, msg component.Message,
 ) {
-	worker.Handle(msg, func(report *component.Report) {
-		switch {
-		case report.Status == component.Done:
-			output <- msg
+	report := worker.Handle(msg)
 
-		case report.Status == component.Continue:
-		default:
-		}
+	switch {
+	case report.Status == component.Done:
+		output <- msg
+	case report.Status == component.Continue:
+	case report.Status >= component.Fail && report.Status < component.Retry:
+	case report.Status >= component.Retry && report.Status < component.Drop:
+	default:
+	}
 
-		msg.Release()
-	})
+	msg.Release()
 }

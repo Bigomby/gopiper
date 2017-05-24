@@ -31,5 +31,5 @@ package component
 // the message should be discarded.
 // - Discard (300+): Silently drop the message.
 type Component interface {
-	Handle(Message, HandledCallback)
+	Handle(Message) *Report
 }

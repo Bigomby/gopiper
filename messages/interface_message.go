@@ -23,6 +23,11 @@ type InterfaceMessage struct {
 	report     *component.Report
 }
 
+// NewInterfaceMessage creates a new instance of InterfaceMessage
+func NewInterfaceMessage() component.Message {
+	return &InterfaceMessage{attributes: make(map[string]interface{})}
+}
+
 // GetData get the bytes array stored by the previous handler
 func (m InterfaceMessage) GetData() interface{} {
 	return m.data

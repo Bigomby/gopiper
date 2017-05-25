@@ -17,19 +17,8 @@ package component
 // Component represents any element in the pipeline that performs some work
 // on a message.
 //
-// A component should call the callback function to report the status of the
-// action performed. Depending on the report, the following actions will
-// occur:
-//
-// - Done (code 0): The message has been successfully processed and should
-// be sent to the next component of the pipeline.
-// - Continue (code 1): The message has been successfully processed, but
-// the message should not be sent to the next component of the pipeline.
-// - Retry (code 100 - 199): The component has failed to process the message
-// and should be retried.
-// - Fail (code 200-299): The component has failed to process the message and
-// the message should be discarded.
-// - Discard (300+): Silently drop the message.
+// A component should return a *Report containing the status of the
+// action performed.
 type Component interface {
-	Handle(Message, HandledCallback)
+	Handle(Message) *Report
 }

@@ -23,6 +23,7 @@ import (
 	"runtime"
 	"sync"
 
+	"github.com/Bigomby/gopiper/pipeline"
 	lua "github.com/yuin/gopher-lua"
 )
 
@@ -31,6 +32,9 @@ var (
 	pipe    string
 
 	terminate = make(chan struct{})
+
+	// Pipeline is the global pipeline object
+	Pipeline *pipeline.Pipeline
 )
 
 func printVersion() {
@@ -78,4 +82,5 @@ func main() {
 	}()
 
 	wg.Wait()
+	Pipeline.Close()
 }

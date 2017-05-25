@@ -17,6 +17,8 @@ package component
 // Factory is used to create instances of Components
 type Factory interface {
 	Create(postponed chan Message) Component
+	Destroy()
 	SetAttribute(key string, value interface{}) error
-	Amount() int
+	PoolSize() int
+	ChannelSize() int
 }

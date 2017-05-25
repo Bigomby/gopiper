@@ -66,13 +66,12 @@ func loadComponent(L *lua.LState) int {
 
 	factory := fs.(func() component.Factory)()
 	attributes.ForEach(func(key lua.LValue, val lua.LValue) {
-		factory.SetAttribute(key.String(), val.String())
+		factory.SetAttribute(key.String(), getValue(val))
 	})
 
 	ud := L.NewUserData()
 	ud.Value = factory
 	L.SetMetatable(ud, L.GetTypeMetatable("factory"))
-
 	L.Push(ud)
 
 	return 1
@@ -101,7 +100,25 @@ func createPipeline(L *lua.LState) int {
 		factories = append(factories, factory)
 	})
 
-	pipeline.NewPipeline(factories)
+	Pipeline = pipeline.NewPipeline(factories)
 
 	return 0
+}
+
+func getValue(value lua.LValue) interface{} {
+	if value.Type().String() == "string" {
+		return value.String()
+	}
+
+	if value.Type().String() != "table" {
+		return value
+	}
+
+	luaTable := value.(*lua.LTable)
+	goMap := make(map[string]interface{})
+	luaTable.ForEach(func(key lua.LValue, val lua.LValue) {
+		goMap[key.String()] = getValue(val)
+	})
+
+	return goMap
 }

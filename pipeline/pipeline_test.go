@@ -36,7 +36,9 @@ func (f TestFactory) SetAttribute(key string, value interface{}) error {
 	return nil
 }
 
-func (f TestFactory) Amount() int { return 1 }
+func (f TestFactory) ChannelSize() int { return 1 }
+func (f TestFactory) PoolSize() int    { return 1 }
+func (f TestFactory) Destroy()         {}
 
 func TestPipeline(t *testing.T) {
 	factory := TestFactory{}

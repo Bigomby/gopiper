@@ -100,7 +100,7 @@ func createPipeline(L *lua.LState) int {
 		factories = append(factories, factory)
 	})
 
-	pipeline.NewPipeline(factories)
+	Pipeline = pipeline.NewPipeline(factories)
 
 	return 0
 }

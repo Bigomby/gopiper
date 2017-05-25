@@ -20,14 +20,16 @@ configuration language.
 ## Creating components
 
 Components are compiled as Go plugins and are loaded at runtime. To create a
-component you just need to implement the `Component` interface.
-Also, a `Factory` is needed by the pipeline to create `Amount()`
-workers of your component.
+component you just need to implement the `Component` interface and a `Factory`
+interface.
 
 ```go
 type Factory interface {
   Create(postponed chan Message) Component
-  Amount() int
+  Destroy()
+  SetAttribute(key string, value interface{}) error
+  PoolSize() int
+  ChannelSize() int
 }
 
 type Component interface {
@@ -35,26 +37,26 @@ type Component interface {
 }
 ```
 
-Since this approach uses a pool of worker, it's recommended to process messages
-in a synchronous way. The pipeline's internal logic takes care of managing
-workers.
+Since the approach of tis app uses a pool of worker, it's recommended to process
+messages in a synchronous way. The pipeline's internal logic takes care of
+managing workers so you should not return from the `Handle()` function until you
+are completely done with the message.
 
-A component receives a `Message` interface, get data from the message and
+A component receives a `Message` interface, gets data from the message and
 performs some work with it. When the job is done, the component should call
 the `HandledCallback` to inform the pipeline that the message has been
 processed.
 
 ```Go
 type Message interface {
-	SetData(data []byte)
-	GetData() []byte
-	Status() *Report
-	Release()
+  GetData() interface{}
+  SetData(interface{})
+  GetAttribute(string) interface{}
+  SetAttribute(string, interface{})
+  Status() *Report
+  Release()
 }
 ```
-
-**⚠️ After the callback has been called, the component should not modify the
-message in any way. Unexpected behavior may occur if you do that.**
 
 ### Error handling
 
@@ -63,8 +65,8 @@ inform the result of the processing.
 
 ```go
 type Report struct {
-	Status      int
-	Description string
+  Status      int
+  Description string
 }
 ```
 
@@ -90,23 +92,23 @@ components and start the pipeline as you can see in the following example:
 
 ```lua
 -- Import the module
-local gopiper = require("gopiper")
+local gopiper = require('gopiper')
 
 -- Insert desired components on compontents table
 local components = {
-  gopiper.loadComponent("build/stdin_component.so", {}),
-  gopiper.loadComponent("build/stdout_component.so", {}),
+  gopiper.loadComponent('stdin_component.so', {}),
+  gopiper.loadComponent('stdout_component.so', {}),
 }
 
 -- Create the pipeline
 gopiper.createPipeline(components)
 ```
 
-### Using Go
+### Using from Go
 
 `// TODO`
 
-### Using C ABI
+### Using from C
 
 `// TODO`
 

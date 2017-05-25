@@ -15,11 +15,25 @@
 package component
 
 const (
-	Done     = 0
+	// Done is the status code for indicating that the message has been
+	// successfuly handled and should be sent to the next component
+	Done = 0
+
+	// Continue is the status code for indicating that the message has been
+	// successfuly handled, but should not be sent to the next component
 	Continue = 1
-	Retry    = 100
-	Fail     = 200
-	Drop     = 300
+
+	// Retry is the status code for indicating that the worker has failed to
+	// handle the message and should be retried again.
+	Retry = 100
+
+	// Fail is the status code for indicating that the worker has failed to
+	// handle the message and should not be retried again.
+	Fail = 200
+
+	// Drop is the status code for indicating that the message has been discarded
+	// by the worker and also shuold be
+	Drop = 300
 )
 
 // Report contains information about the result of processing a message

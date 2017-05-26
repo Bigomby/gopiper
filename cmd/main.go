@@ -21,7 +21,6 @@ import (
 	"os"
 	"os/signal"
 	"runtime"
-	"sync"
 
 	"github.com/Bigomby/gopiper/pipeline"
 	lua "github.com/yuin/gopher-lua"
@@ -62,9 +61,6 @@ func init() {
 }
 
 func main() {
-	wg := new(sync.WaitGroup)
-	wg.Add(1)
-
 	L := lua.NewState()
 	defer L.Close()
 
@@ -75,12 +71,7 @@ func main() {
 
 	sigint := make(chan os.Signal)
 	signal.Notify(sigint, os.Interrupt)
+	<-sigint
 
-	go func() {
-		<-sigint
-		wg.Done()
-	}()
-
-	wg.Wait()
 	Pipeline.Close()
 }

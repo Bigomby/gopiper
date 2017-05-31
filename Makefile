@@ -5,16 +5,16 @@ MKL_BLUE?=	\033[034m
 MKL_CLR_RESET?=	\033[0m
 
 BIN=      gopiper
-prefix?=  /usr/local
+CMD=      ./cmd/$(BIN)
 bindir?=	$(prefix)/bin
 
 build: vendor
 	@printf "$(MKL_YELLOW)[BUILD]$(MKL_CLR_RESET)    Building project\n"
-	@go build -ldflags "-X main.version=`git describe --tags --always --dirty=-dev`" -o $(BIN) ./cmd
+	@go build -ldflags "-X main.version=`git describe --tags --always --dirty=-dev`" -o $(BIN) $(CMD)
 
 install: build
-	@printf "$(MKL_YELLOW)[INSTALL]$(MKL_CLR_RESET)  Installing $(BIN) to $(bindir)\n"
-	@install $(BIN) $(bindir)
+	@printf "$(MKL_YELLOW)[INSTALL]$(MKL_CLR_RESET)  Installing $(BIN)\n"
+	@go install -ldflags "-X main.version=`git describe --tags --always --dirty=-dev`" $(CMD)
 
 uninstall:
 	@printf "$(MKL_RED)[UNINSTALL]$(MKL_CLR_RESET)  Remove $(BIN) from $(bindir)\n"
